@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Customer List</title>
+	<!-- Bootstrap CSS -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome for icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+</head>
+
+<body>
+	<div class="container mt-4">
+		<div class="row mb-3">
+			<div class="col">
+				<h2>Customer List</h2>
+			</div>
+			<div class="col text-right">
+				<a href="/addCustomer"><button class="btn btn-primary" data-toggle="modal"
+						data-target="#addCustomerModal">
+						<i class="fas fa-plus"></i> Add Customer
+					</button></a>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col">
+				<select class="form-control">
+					<option selected>Search</option>
+					<option>First Name</option>
+					<option>City</option>
+					<option>Email</option>
+					<option>Phone</option>
+				</select>
+			</div>
+			<div class="col">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Search...">
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" type="button">Search</button>
+					</div>
+				</div>
+			</div>
+			<div class="col text-right">
+				<a href="/sync"> <button class="btn btn-primary">
+						<i class="fas fa-sync-alt"></i> Sync
+					</button> </a>
+			</div>
+		</div>
+		<div th:if="${session.message}" th:classappend="${session.message}" class="alert alert-success" role="alert">
+			<p th:text="${session.message}" class="text-center"></p>
+			<th:block th:text="${@sessionHelper.removeMessageFromSession()}"> </th:block>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Address</th>
+					<th>Street</th>
+					<th>City</th>
+					<th>State</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Table rows will be dynamically generated from the server -->
+				<!-- Example row -->
+				<tr th:each="customer: ${customerList}">
+					<td th:text="${customer.firstName}"></td>
+					<td th:text="${customer.lastName}"></td>
+					<td th:text="${customer.address}"></td>
+					<td th:text="${customer.street}"></td>
+					<td th:text="${customer.city}"></td>
+					<td th:text="${customer.state}"></td>
+					<td th:text="${customer.email}"></td>
+					<td th:text="${customer.phone}"></td>
+
+					<td>
+						<a th:href="@{'/edit/'+${customer.uuid}}"><button class="btn btn-sm btn-info"><i
+									class="fas fa-edit"></i> Edit</button></a>
+							<a th:href="@{'deletecustomer/'+${customer.uuid}}"> <button class="btn btn-sm btn-danger"><i
+										class="fas fa-trash-alt"></i> Delete</button></a>
+					</td>
+				</tr>
+				<!-- Add more rows dynamically -->
+			</tbody>
+		</table>
+		
+	</div>
+
+	<!-- Bootstrap JS and Font Awesome JS -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
